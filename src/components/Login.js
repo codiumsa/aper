@@ -25,20 +25,25 @@ const trans = (x, y, s) =>
 const useLogoStyles = makeStyles({
   media: { width: '80%' }
 });
-const Logo = () => {
+const Logo = ({ preventAnimation }) => {
   const [props, set] = useSpring(() => ({
     xys: [0, 0, 1],
     config: { mass: 5, tension: 350, friction: 40 }
   }));
   const classes = useLogoStyles();
   return (
-    <animated.img
-      className={classes.media}
-      src={logo}
-      onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
-      onMouseLeave={() => set({ xys: [0, 0, 1] })}
-      style={{ transform: props.xys.interpolate(trans) }}
-    />
+    <React.Fragment>
+      {!preventAnimation && (
+        <animated.img
+          className={classes.media}
+          src={logo}
+          onMouseMove={({ clientX: x, clientY: y }) => set({ xys: calc(x, y) })}
+          onMouseLeave={() => set({ xys: [0, 0, 1] })}
+          style={{ transform: props.xys.interpolate(trans) }}
+        />
+      )}
+      {preventAnimation && <img alt="" className={classes.media} src={logo} />}
+    </React.Fragment>
   );
 };
 
@@ -128,6 +133,12 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       color: theme.palette.primary.dark
     }
+  },
+  logoTop: {
+    width: '50%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: theme.spacing(4)
   }
 }));
 
@@ -156,13 +167,20 @@ const Login = ({ history }) => {
             </div>
           )}
           <div className={classes.rightContent}>
-            <Typography
-              className={classes.mainTitle}
-              align="center"
-              variant="h6"
-            >
-              {t('login.title')}
-            </Typography>
+            {!matchesMedia && (
+              <div className={classes.logoTop}>
+                <Logo preventAnimation />
+              </div>
+            )}
+            {matchesMedia && (
+              <Typography
+                className={classes.mainTitle}
+                align="center"
+                variant="h6"
+              >
+                {t('login.title')}
+              </Typography>
+            )}
             {creatingAccount && (
               <TextField
                 className={classes.input}
