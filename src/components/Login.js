@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(),
     width: '90%',
     maxWidth: '960px',
-    padding: '65px 130px 8px 95px',
+    padding: '30px 95px',
     borderRadius: 10,
     [theme.breakpoints.down('md')]: {
       padding: '65px 65px 8px 48px'
@@ -85,8 +85,7 @@ const useStyles = makeStyles(theme => ({
   leftContent: {
     display: 'flex',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'center'
   },
   rightContent: {
     display: 'flex',
