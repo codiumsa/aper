@@ -2,6 +2,7 @@
   "name": "mitr",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://10.7.100.190:5000",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-brands-svg-icons": "^5.9.0",

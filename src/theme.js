@@ -59,6 +59,16 @@ const theme = createMuiTheme({
           backgroundColor: '#fff'
         }
       }
+    },
+    MuiPaper: {
+      elevation4: {
+        boxShadow: 'none'
+      }
+    },
+    MuiAppBar: {
+      positionFixed: {
+        position: 'unset'
+      }
     }
   },
   typography: {
