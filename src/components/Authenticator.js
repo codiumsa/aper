@@ -9,11 +9,15 @@ const Authenticator = ({ children, history }) => {
     verified: true,
     userData: {}
   });
-  const loginUser = userData =>
-    setAuthState({ loggedIn: true, verified: true, userData });
+  const loginUser = React.useCallback(
+    userData => setAuthState({ loggedIn: true, verified: true, userData }),
+    []
+  );
   // TODO also delete localStorage data if we ever store something there
-  const logoutUser = () =>
-    setAuthState({ loggedIn: false, verified: true, userData: {} });
+  const logoutUser = React.useCallback(
+    () => setAuthState({ loggedIn: false, verified: true, userData: {} }),
+    []
+  );
   useEffect(() => {
     // If dependencies change, we make sure if user is still logged in.
     // If not, redirect to login

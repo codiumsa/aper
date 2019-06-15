@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import GoogleLogin from 'react-google-login';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from '@material-ui/core/styles';
@@ -147,9 +147,8 @@ const useStyles = makeStyles(theme => ({
 const Login = ({ history }) => {
   const { t } = useTranslation();
   const [creatingAccount, setCreatingAccount] = React.useState(false);
-  const { loginUser, logoutUser } = useContext(AuthenticationContext);
+  const { loginUser } = useContext(AuthenticationContext);
   // We make sure to logout user if this component is rendered
-  useEffect(() => logoutUser(), [logoutUser]);
   const loginCallback = (data, success) => {
     console.log(data);
     loginUser(data);
