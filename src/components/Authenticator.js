@@ -26,7 +26,8 @@ const Authenticator = ({ children, history }) => {
   const logoutUser = React.useCallback(() => {
     localStorage.removeItem('userData');
     setAuthState({ loggedIn: false, verified: true, userData: {} });
-  }, []);
+    history.push('/login');
+  }, [history]);
   useEffect(() => {
     if (authState.verified && !authState.loggedIn) {
       history.push('/login');

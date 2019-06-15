@@ -9,5 +9,11 @@
     "loginWithProvider": "También podés ingresar utilizando:",
     "loginWithAccount": "Acceder con cuenta existente",
     "orCreateAccount": "O, podés crear una cuenta"
+  },
+  "home": {
+    "clickHere": "Hacé click acá",
+    "subtitle": "Puede tardar un chiqui, tenele paciencia...",
+    "lastUser": "El último usuario fue Rikorita, hoy a las 11:20AM",
+    "notUsing": "No vas a usar tu lugar?"
   }
 }
