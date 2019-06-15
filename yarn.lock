@@ -10470,10 +10470,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typeface-poppins@^0.0.72:
+typeface-montserrat-alternates@^0.0.72:
   version "0.0.72"
-  resolved "https://registry.yarnpkg.com/typeface-poppins/-/typeface-poppins-0.0.72.tgz#3262d6533dea2e99a5cafb3be7d8fa876e105206"
-  integrity sha512-FgzdU4XfGYc4aTq6WZD9FC+le4Foz6cyzjdjDvVnQePTQSUD0dkrXiVaTK/cyNVXQrEl2ykV39PxeKeFqqkrTA==
+  resolved "https://registry.yarnpkg.com/typeface-montserrat-alternates/-/typeface-montserrat-alternates-0.0.72.tgz#34550a3d4c604352aab94f5362595424da1e91d8"
+  integrity sha512-gFc6V15+/rt0z36Vhng41XgKz0X2V6BSQO2SIq9c3KSItMW3uztmoP2yandjzhzjzDWgs2p04ZXf/JyBM4RhoQ==
 
 typescript-eslint-parser@^16.0.0:
   version "16.0.1"

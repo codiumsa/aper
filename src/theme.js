@@ -10,7 +10,7 @@ const theme = createMuiTheme({
       dark: '#7c99b4'
     },
     secondary: {
-      main: '#ffc09f',
+      main: '#ffc09f'
       // dark: '#508991'
     },
     error: {
@@ -62,7 +62,7 @@ const theme = createMuiTheme({
     }
   },
   typography: {
-    fontFamily: 'Poppins'
+    fontFamily: 'Montserrat Alternates'
   }
 });
 theme.overrides.MuiInputBase = {
