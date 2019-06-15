@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 import { useSpring, animated } from 'react-spring';
 import { AuthenticationContext } from './Authenticator';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/aper-logo.svg';
 
 const calc = (x, y) => [
   -(y - window.innerHeight / 2) / 20,
@@ -191,11 +191,13 @@ const Login = ({ history }) => {
             )}
             <TextField
               className={classes.input}
+              InputLabelProps={{ shrink: true }}
               label={t('login.email')}
               variant="filled"
             />
             <TextField
               className={classes.input}
+              InputLabelProps={{ shrink: true }}
               label={t('login.password')}
               type="password"
               variant="filled"
