@@ -23,7 +23,8 @@ const trans = (x, y, s) =>
   `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
 
 const useLogoStyles = makeStyles({
-  media: { width: '80%' }
+  media: { width: '80%' },
+  mediaSm: { width: '197', height: '120px' }
 });
 const Logo = ({ preventAnimation }) => {
   const [props, set] = useSpring(() => ({
@@ -42,7 +43,9 @@ const Logo = ({ preventAnimation }) => {
           style={{ transform: props.xys.interpolate(trans) }}
         />
       )}
-      {preventAnimation && <img alt="" className={classes.media} src={logo} />}
+      {preventAnimation && (
+        <img alt="" className={classes.mediaSm} src={logo} />
+      )}
     </React.Fragment>
   );
 };
@@ -135,9 +138,9 @@ const useStyles = makeStyles(theme => ({
     }
   },
   logoTop: {
-    width: '50%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
     marginBottom: theme.spacing(4)
   }
 }));
