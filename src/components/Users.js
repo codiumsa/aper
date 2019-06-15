@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -10,7 +10,9 @@ import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import '../assets/main.css';
-import { Avatar, Typography } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
+import useMobileDetect from 'use-mobile-detect-hook';
+import axios from 'axios';
 import { AuthenticationContext } from './Authenticator';
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +61,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row'
   },
   gridList: {
-    width: 800,
+    maxWidth: 800,
     height: '100%',
     justifyContent: 'center',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
@@ -125,17 +127,32 @@ const mockUsers = [
 const Users = () => {
   const context = useContext(AuthenticationContext);
   const classes = useStyles();
+  const detectMobile = useMobileDetect();
   const [users, setUsers] = useState(
     mockUsers.map(user => ({ ...user, hovering: false }))
   );
   const [nextOrder, setNextOrder] = useState(1);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    // TODO: set Authorization header
+    // const userDataString = localStorage.getItem('userData');
+    // console.log(userDataString);
+    const fetchData = async () => {
+      const result = await axios('users');
+      setUsers(result.data);
+      setNextOrder(result.data.length + 1);
+    };
+    fetchData();
+  }, []);
+
   const handleClick = currentUser => {
     if (currentUser.order) {
       // Remove from list
       const shiftingNumber = currentUser.order;
       setUsers(
         users.map(user => {
-          if (user.googleId === currentUser.googleId) {
+          if (user.id === currentUser.id) {
             return { ...user, order: null };
           }
           if (user.order > shiftingNumber) {
@@ -149,7 +166,7 @@ const Users = () => {
     } else {
       setUsers(
         users.map(user => {
-          if (user.googleId === currentUser.googleId) {
+          if (user.id === currentUser.id) {
             return { ...user, order: nextOrder };
           }
           return user;
@@ -159,28 +176,46 @@ const Users = () => {
     }
   };
 
+  const handleSaveClick = async () => {
+    const updatedUsers = users.slice();
+    const usersSortedByOrder = updatedUsers.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    const bodyFormData = new FormData();
+    bodyFormData.set('ids', usersSortedByOrder.map(x => x.id).join());
+    await axios({
+      method: 'post',
+      url: 'users',
+      data: bodyFormData,
+      config: { headers: { 'Content-Type': 'multipart/form-data' } }
+    });
+  };
+
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
         <CardContent className={classes.cardContent}>
           <GridList
             cellHeight={200}
-            cols={5}
+            cols={detectMobile.isMobile() ? 1 : users.length}
             spacing={10}
             className={classes.gridList}
           >
             {users.map(user => {
               return (
                 <GridListTile
-                  key={user.googleId}
+                  key={user.id}
                   cols={1}
                   rows={1}
                   onClick={() => handleClick(user)}
                 >
                   {/* <Badge badgeContent={user.order} className={classes.badge} color="primary"> */}
                   <Avatar
-                    src={user.imageUrl}
-                    alt={user.givenName}
+                    src={
+                      user.avatar ||
+                      `https://lh4.googleusercontent.com/-kYgzyAWpZzJ/ABCDEFGHI/AAAJKLMNOP/tIXL9Ir44LE/s99-c/photo.jpg`
+                    }
+                    alt={user.name}
                     className={classes.userAvatar}
                   />
                   {/* </Badge> */}
@@ -191,7 +226,7 @@ const Users = () => {
                       className={classes.badge}
                       color="primary"
                     >
-                      {user.givenName}
+                      {user.name && user.name.split(' ')[0]}
                     </Badge>
                   </div>
                 </GridListTile>
@@ -200,7 +235,12 @@ const Users = () => {
           </GridList>
         </CardContent>
         <CardActions>
-          <Fab className={classes.button} color="primary" variant="extended">
+          <Fab
+            className={classes.button}
+            color="primary"
+            variant="extended"
+            onClick={() => handleSaveClick()}
+          >
             Guardar
           </Fab>
         </CardActions>
