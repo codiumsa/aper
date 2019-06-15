@@ -6,15 +6,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons/faLongArrowAltUp';
-import { Spring } from 'react-spring/renderprops';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import Toolbar from './Toolbar';
-
-const TOGGLE_SIZES = {
-  MIN: 250,
-  MAX: 300
-};
+import ControlSVG from './ControlSVG';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -59,10 +54,10 @@ const useStyles = makeStyles(theme => ({
   },
   toggleContainer: {
     display: 'flex',
-    width: '100%',
+    // width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: TOGGLE_SIZES.MAX,
+    flexDirection: 'column',
     marginTop: theme.spacing(2)
   },
   toggleButton: {
@@ -93,6 +88,11 @@ const useStyles = makeStyles(theme => ({
   notUsingButton: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4)
+  },
+  controlSVG: {
+    width: 300,
+    height: 300,
+    marginTop: theme.spacing()
   }
 }));
 
@@ -109,7 +109,7 @@ const Home = () => {
           <CardContent className={classes.cardContent}>
             <div className={classes.elementsContainer}>
               <div className={classes.toggleContainer}>
-                <Spring
+                {/* <Spring
                   reset
                   reverse={reverse}
                   from={{ number: 300 }}
@@ -124,7 +124,12 @@ const Home = () => {
                       onMouseEnter={() => setReverse(prev => !prev)}
                     />
                   )}
-                </Spring>
+                </Spring> */}
+
+                <ControlSVG
+                  className={classes.controlSVG}
+                  onButtonClick={() => axios.get('open_gate')}
+                />
               </div>
               <div className={classes.titleContainer}>
                 <Typography variant="h6">{t('home.clickHere')}</Typography>

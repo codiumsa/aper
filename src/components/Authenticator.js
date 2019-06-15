@@ -18,9 +18,9 @@ const Authenticator = ({ children, history }) => {
     userData
   });
 
-  const loginUser = React.useCallback(userData => {
-    localStorage.setItem('userData', JSON.stringify(userData));
-    setAuthState({ loggedIn: true, verified: true, userData });
+  const loginUser = React.useCallback(ud => {
+    localStorage.setItem('userData', JSON.stringify(ud));
+    setAuthState({ loggedIn: true, verified: true, userData: ud });
   }, []);
   // TODO also delete localStorage data if we ever store something there
   const logoutUser = React.useCallback(() => {
