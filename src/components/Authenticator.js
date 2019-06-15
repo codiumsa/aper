@@ -4,23 +4,30 @@ import { withRouter } from 'react-router-dom';
 const AuthenticationContext = React.createContext();
 
 const Authenticator = ({ children, history }) => {
+  const userDataString = localStorage.getItem('userData');
+  let userData = {};
+  let loggedIn = false;
+  if (userDataString) {
+    userData = JSON.parse(userDataString);
+    loggedIn = true;
+  }
+
   const [authState, setAuthState] = useState({
-    loggedIn: false,
+    loggedIn,
     verified: true,
-    userData: {}
+    userData
   });
-  const loginUser = React.useCallback(
-    userData => setAuthState({ loggedIn: true, verified: true, userData }),
-    []
-  );
+
+  const loginUser = React.useCallback(userData => {
+    localStorage.setItem('userData', JSON.stringify(userData));
+    setAuthState({ loggedIn: true, verified: true, userData });
+  }, []);
   // TODO also delete localStorage data if we ever store something there
-  const logoutUser = React.useCallback(
-    () => setAuthState({ loggedIn: false, verified: true, userData: {} }),
-    []
-  );
+  const logoutUser = React.useCallback(() => {
+    localStorage.removeItem('userData');
+    setAuthState({ loggedIn: false, verified: true, userData: {} });
+  }, []);
   useEffect(() => {
-    // If dependencies change, we make sure if user is still logged in.
-    // If not, redirect to login
     if (authState.verified && !authState.loggedIn) {
       history.push('/login');
     }
