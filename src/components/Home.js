@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AuthenticationContext } from './Authenticator';
+import useMobileDetect from 'use-mobile-detect-hook';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -30,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     background: '#FFC09F'
   },
   gridList: {
-    width: 800,
+    maxWidth: 800,
     height: '100%',
     justifyContent: 'center',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
@@ -85,6 +86,7 @@ const mockUsers = [
 ];
 const Home = () => {
   const context = useContext(AuthenticationContext);
+  const detectMobile = useMobileDetect();
   const classes = useStyles();
   const [users, setUsers] = useState(
     mockUsers.map(user => ({ ...user, hovering: false }))
@@ -111,7 +113,6 @@ const Home = () => {
       setUsers(
         users.map(user => {
           if (user.googleId === currentUser.googleId) {
-            console.log('will change user');
             return { ...user, order: nextOrder };
           }
           return user;
@@ -121,13 +122,21 @@ const Home = () => {
     }
   };
 
+  const handleSaveClick = () => {
+    const usersSortedByOrder = users.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    // TODO: API call
+    console.log(usersSortedByOrder);
+  };
+
   return (
     <div className={classes.root}>
       <Card className={classes.card}>
         <CardContent>
           <GridList
             cellHeight={100}
-            cols={6}
+            cols={detectMobile.isMobile() ? 2 : 6}
             spacing={30}
             className={classes.gridList}
           >
@@ -159,7 +168,11 @@ const Home = () => {
           </GridList>
         </CardContent>
         <CardActions>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleSaveClick()}
+          >
             Guardar
           </Button>
         </CardActions>
