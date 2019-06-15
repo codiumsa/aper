@@ -1,4 +1,5 @@
 import React from 'react';
+import Favicon from 'react-favicon';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'typeface-montserrat-alternates';
@@ -11,6 +12,7 @@ import './utils/i18n';
 function App() {
   return (
     <Router>
+      <Favicon url="favicon.png" />
       <CustomThemeProvider>
         <CssBaseline />
         <Authenticator>
