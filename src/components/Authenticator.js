@@ -4,13 +4,19 @@ import { withRouter } from 'react-router-dom';
 const AuthenticationContext = React.createContext();
 
 const Authenticator = ({ children, history }) => {
-  const userDataString = localStorage.getItem('userData');
+  const userDataString = localStorage.getItem('userData'); //lee localstorage y carga userdata
   let userData = {};
   let loggedIn = false;
   if (userDataString) {
     userData = JSON.parse(userDataString);
-    loggedIn = true;
+    if (userData && userData.error) {
+      userData = false;
+      loggedIn = false;
+    } else {
+      loggedIn = true;
+    }
   }
+  console.log(userDataString);
 
   const [authState, setAuthState] = useState({
     loggedIn,
@@ -23,15 +29,22 @@ const Authenticator = ({ children, history }) => {
     setAuthState({ loggedIn: true, verified: true, userData });
   }, []);
   // TODO also delete localStorage data if we ever store something there
+
   const logoutUser = React.useCallback(() => {
     localStorage.removeItem('userData');
     setAuthState({ loggedIn: false, verified: true, userData: {} });
-  }, []);
+    history.push('/login');
+  }, [history]);
+
   useEffect(() => {
     if (authState.verified && !authState.loggedIn) {
+      console.log('redirigiendo al login');
       history.push('/login');
+    } else if (authState.verified && authState.loggedIn) {
+      history.push('/home');
     }
   }, [authState.verified, authState.loggedIn, history]);
+
   return (
     <AuthenticationContext.Provider
       value={{ authState, loginUser, logoutUser }}
