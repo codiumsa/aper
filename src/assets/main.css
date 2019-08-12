@@ -1,0 +1,15 @@
+.MuiGridListTileBar-title {
+  font-size: 12px !important;
+}
+
+.MuiGridListTileBar-actionIcon > button {
+  padding: 0px !important;
+}
+
+.MuiGridListTile-root {
+  cursor: pointer;
+}
+
+.MuiGridListTile-root:hover img {
+  filter: brightness(150%);
+}

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
@@ -10,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import Toolbar from './Toolbar';
 import ControlSVG from './ControlSVG';
+import { AuthenticationContext } from './Authenticator';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -110,6 +112,22 @@ const Home = () => {
             <div className={classes.elementsContainer}>
               <div className={classes.toggleContainer}>
                 {/* <Spring
+
+  const { authState } = useContext(AuthenticationContext);
+
+  const [reverse, setReverse] = React.useState(false);
+  console.log(authState);
+  return (
+    authState.userData && (
+      <div className={classes.mainContainer}>
+        <Toolbar />
+        <div className={classes.cardContainer}>
+          <Card className={classes.card}>
+            <CardContent className={classes.cardContent}>
+              <div className={classes.elementsContainer}>
+                <div className={classes.toggleContainer}>
+                  {/* <Spring
+
                   reset
                   reverse={reverse}
                   from={{ number: 300 }}
@@ -157,8 +175,6 @@ const Home = () => {
       </div>
     </div>
   );
-
-  //
 };
 
 export default Home;
