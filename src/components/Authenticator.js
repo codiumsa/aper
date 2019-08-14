@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 const AuthenticationContext = React.createContext();
 
 const Authenticator = ({ children, history }) => {
-  const userDataString = localStorage.getItem('userData'); //lee localstorage y carga userdata
+  const userDataString = localStorage.getItem('userData');
   let userData = {};
   let loggedIn = false;
   if (userDataString) {

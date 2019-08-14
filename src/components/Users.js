@@ -2,17 +2,15 @@ import React, { useState, useContext, useEffect, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Fab from '@material-ui/core/Fab';
-import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import '../assets/main.css';
 import { Avatar } from '@material-ui/core';
 import useMobileDetect from 'use-mobile-detect-hook';
-import axios from 'axios';
+import axios from '../utils/axios';
 import { AuthenticationContext } from './Authenticator';
 
 const useStyles = makeStyles(theme => ({
@@ -91,6 +89,7 @@ const useStyles = makeStyles(theme => ({
 
 const mockUsers = [
   {
+    id: 34,
     googleId: 'xyzs',
     imageUrl:
       'https://lh5.googleusercontent.com/-cjXARxr1bNk/AAAAAAAAAAI/AAAAAAAAEHs/z7mrce9yPuc/s96-c/photo.jpg',
@@ -98,6 +97,7 @@ const mockUsers = [
     familyName: 'Peralta Scura'
   },
   {
+    id: 35,
     googleId: 'abc',
     imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=707b9c33066bf8808c934c8ab394dff6',
@@ -105,18 +105,21 @@ const mockUsers = [
     familyName: 'Doe'
   },
   {
+    id: 36,
     googleId: 'def',
     imageUrl: 'https://randomuser.me/api/portraits/women/44.jpg',
     givenName: 'Gabriela',
     familyName: 'Doe'
   },
   {
+    id: 37,
     googleId: 'ghi',
     imageUrl: 'https://randomuser.me/api/portraits/women/38.jpg',
     givenName: 'Jennifer',
     familyName: 'Doe'
   },
   {
+    id: 38,
     googleId: 'jkl',
     imageUrl: 'https://randomuser.me/api/portraits/women/27.jpg',
     givenName: 'Alexa',
@@ -135,9 +138,6 @@ const Users = () => {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    // TODO: set Authorization header
-    // const userDataString = localStorage.getItem('userData');
-    // console.log(userDataString);
     const fetchData = async () => {
       const result = await axios('users');
       setUsers(result.data);
@@ -178,11 +178,8 @@ const Users = () => {
 
   const handleSaveClick = async () => {
     const updatedUsers = users.slice();
-    const usersSortedByOrder = updatedUsers.sort((a, b) =>
-      a.order > b.order ? 1 : -1
-    );
     const bodyFormData = new FormData();
-    bodyFormData.set('ids', usersSortedByOrder.map(x => x.id).join());
+    bodyFormData.set('ids', updatedUsers.map(x => x.order).join());
     await axios({
       method: 'post',
       url: 'users',
@@ -211,10 +208,7 @@ const Users = () => {
                 >
                   {/* <Badge badgeContent={user.order} className={classes.badge} color="primary"> */}
                   <Avatar
-                    src={
-                      user.avatar ||
-                      `https://lh4.googleusercontent.com/-kYgzyAWpZzJ/ABCDEFGHI/AAAJKLMNOP/tIXL9Ir44LE/s99-c/photo.jpg`
-                    }
+                    src={user.avatar}
                     alt={user.name}
                     className={classes.userAvatar}
                   />
