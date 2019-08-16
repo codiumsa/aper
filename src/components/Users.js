@@ -12,46 +12,50 @@ import { Avatar } from '@material-ui/core';
 import useMobileDetect from 'use-mobile-detect-hook';
 import axios from '../utils/axios';
 import { AuthenticationContext } from './Authenticator';
+import Toolbar from './Toolbar';
 
 const useStyles = makeStyles(theme => ({
-  avatar: {
-    backgroundColor: '#FFC09F',
-    width: '15px',
-    height: '15px',
-    fontSize: '12px',
-    marginRight: '5px',
-    marginLeft: '5px',
-    color: 'black'
-  },
-  userAvatar: {
-    margin: 10,
-    width: 120,
-    height: 120
-  },
-  userName: {
-    textAlign: 'center'
-  },
-  root: {
+  mainContainer: {
     display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    flex: '1',
+    flexDirection: 'column',
     minHeight: '100vh',
     background: '#508991'
   },
+  avatar: {
+    backgroundColor: '#FFC09F',
+    width: '15px',
+    marginRight: '5px',
+    marginLeft: '5px',
+    height: '15px',
+    fontSize: '12px',
+    color: 'black'
+  },
+  userAvatar: {
+    display: 'block',
+    margin: 'auto',
+    width: 120,
+    height: 120
+  },
+  cardContainer: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    alignItems: 'center'
+  },
   card: {
-    // background: '#FFC09F'
     margin: theme.spacing(),
     width: '90%',
     maxWidth: '960px',
     padding: '30px 95px',
     borderRadius: 10,
     [theme.breakpoints.down('md')]: {
-      padding: '65px 65px 8px 48px'
+      padding: '0px 65px 8px 48px'
     },
     [theme.breakpoints.down('sm')]: {
-      padding: '65px 15px 8px 15px'
+      padding: '0px 15px 8px 15px'
     }
   },
   cardContent: {
@@ -64,6 +68,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
     transform: 'translateZ(0)'
+  },
+  gridListTile: {
+    justifyContent: 'center'
   },
   titleBar: {
     background:
@@ -81,9 +88,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
     width: '50%'
   },
+  details: {
+    textAlign: 'center'
+  },
   badge: {
-    top: '50%',
-    right: -3
+    margin: 15
   }
 }));
 
@@ -128,7 +137,6 @@ const mockUsers = [
 ];
 
 const Users = () => {
-  const context = useContext(AuthenticationContext);
   const classes = useStyles();
   const detectMobile = useMobileDetect();
   const [users, setUsers] = useState(
@@ -141,7 +149,9 @@ const Users = () => {
     const fetchData = async () => {
       const result = await axios('users');
       setUsers(result.data);
-      setNextOrder(result.data.length + 1);
+      setNextOrder(
+        Math.max.apply(Math, result.data.map(user => user.order)) + 1
+      ); //encuentra el valor mas alto de user.order
     };
     fetchData();
   }, []);
@@ -189,56 +199,58 @@ const Users = () => {
   };
 
   return (
-    <div className={classes.root}>
-      <Card className={classes.card}>
-        <CardContent className={classes.cardContent}>
-          <GridList
-            cellHeight={200}
-            cols={detectMobile.isMobile() ? 1 : users.length}
-            spacing={10}
-            className={classes.gridList}
-          >
-            {users.map(user => {
-              return (
-                <GridListTile
-                  key={user.id}
-                  cols={1}
-                  rows={1}
-                  onClick={() => handleClick(user)}
-                >
-                  {/* <Badge badgeContent={user.order} className={classes.badge} color="primary"> */}
-                  <Avatar
-                    src={user.avatar}
-                    alt={user.name}
-                    className={classes.userAvatar}
-                  />
-                  {/* </Badge> */}
-
-                  <div className={classes.userName}>
-                    <Badge
-                      badgeContent={user.order}
-                      className={classes.badge}
-                      color="primary"
-                    >
-                      {user.name && user.name.split(' ')[0]}
-                    </Badge>
-                  </div>
-                </GridListTile>
-              );
-            })}
-          </GridList>
-        </CardContent>
-        <CardActions>
-          <Fab
-            className={classes.button}
-            color="primary"
-            variant="extended"
-            onClick={() => handleSaveClick()}
-          >
-            Guardar
-          </Fab>
-        </CardActions>
-      </Card>
+    <div className={classes.mainContainer}>
+      <Toolbar />
+      <div className={classes.cardContainer}>
+        <Card className={classes.card}>
+          <CardContent className={classes.cardContent}>
+            <GridList
+              cellHeight={200}
+              cols={detectMobile.isMobile() ? 1 : 3}
+              spacing={10}
+              className={classes.gridList}
+            >
+              {users.map(user => {
+                return (
+                  <GridListTile
+                    key={user.id}
+                    cols={1}
+                    rows={1}
+                    onClick={() => handleClick(user)}
+                  >
+                    {/* <Badge badgeContent={user.order} className={classes.badge} color="primary"> */}
+                    <Avatar
+                      src={user.avatar}
+                      alt={user.name}
+                      className={classes.userAvatar}
+                    />
+                    <div className={classes.details}>
+                      <Badge
+                        badgeContent={user.order !== '' ? user.order : null}
+                        className={classes.badge}
+                        color="primary"
+                      >
+                        <div></div>
+                      </Badge>
+                      <div>{user.name && user.name.split(' ')[0]}</div>
+                    </div>
+                  </GridListTile>
+                );
+              })}
+            </GridList>
+          </CardContent>
+          <CardActions>
+            <Fab
+              className={classes.button}
+              color="primary"
+              variant="extended"
+              onClick={() => handleSaveClick()}
+            >
+              Guardar
+            </Fab>
+          </CardActions>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { AuthenticationContext } from './Authenticator';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -40,13 +41,20 @@ const AperToolbar = () => {
     setAnchorEl(null);
   };
 
+  const goHome = () => {
+    window.location = '/home';
+  };
+
   return (
     <div className={classes.mainContainer}>
       <AppBar className={classes.appBar} color="default">
         <Toolbar className={classes.toolbar}>
-          <Typography variant="h6" color="inherit">
+          <Link
+            style={{ textDecoration: 'none', color: 'white', fontSize: '150%' }}
+            to="/home"
+          >
             Aper
-          </Typography>
+          </Link>
           <Avatar
             onClick={handleAvatarClick}
             className={classes.userAvatar}

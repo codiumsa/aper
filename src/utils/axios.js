@@ -7,6 +7,8 @@ const instance = axios.create({
   timeout: 15000
 });
 
+console.log('setting up axios');
+
 const userDataString = localStorage.getItem('userData');
 let userData = {};
 let loggedIn = false;
@@ -22,6 +24,4 @@ if (userDataString) {
 if (loggedIn) {
   instance.defaults.headers.common.Authorization = userData.tokenId;
 }
-console.log('setting up axios');
-
 export default instance;

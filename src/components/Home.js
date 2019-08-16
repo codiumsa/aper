@@ -8,7 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons/faLongArrowAltUp';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import axios from '../utils/axios';
 import Toolbar from './Toolbar';
 import ControlSVG from './ControlSVG';
 import { AuthenticationContext } from './Authenticator';
@@ -98,10 +98,18 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const opengate = () => {
+  const fetchData = async () => {
+    const result = await axios('open_gate');
+    console.log(result.data);
+  };
+  fetchData();
+};
+
 const Home = () => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const [reverse, setReverse] = React.useState(false);
+  //const [reverse, setReverse] = React.useState(false);
 
   return (
     <div className={classes.mainContainer}>
@@ -146,7 +154,7 @@ const Home = () => {
 
                 <ControlSVG
                   className={classes.controlSVG}
-                  onButtonClick={() => axios.get('open_gate')}
+                  onButtonClick={opengate}
                 />
               </div>
               <div className={classes.titleContainer}>
