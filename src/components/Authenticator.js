@@ -16,7 +16,7 @@ const Authenticator = ({ children, history }) => {
       loggedIn = true;
     }
   }
-  console.log(userDataString);
+  //console.log(userDataString);
 
   const [authState, setAuthState] = useState({
     loggedIn,
@@ -32,6 +32,7 @@ const Authenticator = ({ children, history }) => {
 
   const logoutUser = React.useCallback(() => {
     localStorage.removeItem('userData');
+    localStorage.removeItem('currentUser');
     setAuthState({ loggedIn: false, verified: true, userData: {} });
     history.push('/login');
   }, [history]);

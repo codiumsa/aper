@@ -9,6 +9,7 @@ import Home from './components/Home';
 import Users from './components/Users';
 import { CustomThemeProvider } from './theme';
 import './utils/i18n';
+import { SnackbarProvider } from './components/Snackbar.context';
 
 function App() {
   return (
@@ -16,12 +17,14 @@ function App() {
       <Favicon url="favicon.png" />
       <CustomThemeProvider>
         <CssBaseline />
-        <Authenticator>
-          <Route path={'/login'} component={Login} />
-          <Route path={'/home'} component={Home} />
-          <Route path={'/users'} component={Users} />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
-        </Authenticator>
+        <SnackbarProvider>
+          <Authenticator>
+            <Route path={'/login'} component={Login} />
+            <Route path={'/home'} component={Home} />
+            <Route path={'/users'} component={Users} />
+            <Route exact path="/" render={() => <Redirect to="/home" />} />
+          </Authenticator>
+        </SnackbarProvider>
       </CustomThemeProvider>
     </Router>
   );

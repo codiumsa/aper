@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -11,7 +11,6 @@ import '../assets/main.css';
 import { Avatar } from '@material-ui/core';
 import useMobileDetect from 'use-mobile-detect-hook';
 import axios from '../utils/axios';
-import { AuthenticationContext } from './Authenticator';
 import Toolbar from './Toolbar';
 
 const useStyles = makeStyles(theme => ({
@@ -218,7 +217,6 @@ const Users = () => {
                     rows={1}
                     onClick={() => handleClick(user)}
                   >
-                    {/* <Badge badgeContent={user.order} className={classes.badge} color="primary"> */}
                     <Avatar
                       src={user.avatar}
                       alt={user.name}
@@ -230,7 +228,7 @@ const Users = () => {
                         className={classes.badge}
                         color="primary"
                       >
-                        <div></div>
+                        <div>{/* Nothing to see here */}</div>
                       </Badge>
                       <div>{user.name && user.name.split(' ')[0]}</div>
                     </div>

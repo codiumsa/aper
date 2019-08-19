@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import axios from '../utils/axios';
 import Toolbar from './Toolbar';
 import ControlSVG from './ControlSVG';
-import { AuthenticationContext } from './Authenticator';
+import { SnackbarContext } from './Snackbar.context';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -98,63 +98,50 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const opengate = () => {
+const opengate = snackBarContext => {
   const fetchData = async () => {
-    const result = await axios('open_gate');
-    console.log(result.data);
+    try {
+      const result = await axios('open_gate');
+      if (result.data && snackBarContext)
+        snackBarContext.openSnackbar(result.data, 'success');
+    } catch (e) {
+      if (e.request && e.request.response && snackBarContext)
+        snackBarContext.openSnackbar(e.request.response, 'error');
+    }
   };
   fetchData();
 };
 
-const Home = () => {
+const notUsing = snackBarContext => {
+  const fetchData = async () => {
+    try {
+      const result = await axios.post('not_using');
+      if (result.data && snackBarContext)
+        snackBarContext.openSnackbar(result.data, 'success');
+    } catch (e) {
+      if (e.request && e.request.response && snackBarContext)
+        snackBarContext.openSnackbar(e.request.response, 'error');
+    }
+  };
+  fetchData();
+};
+
+const Home = props => {
   const { t } = useTranslation();
   const classes = useStyles();
-  //const [reverse, setReverse] = React.useState(false);
-
+  const snackBarContext = useContext(SnackbarContext);
+  console.log(props);
   return (
     <div className={classes.mainContainer}>
-      <Toolbar />
+      <Toolbar history={props.history} />
       <div className={classes.cardContainer}>
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
             <div className={classes.elementsContainer}>
               <div className={classes.toggleContainer}>
-                {/* <Spring
-
-  const { authState } = useContext(AuthenticationContext);
-
-  const [reverse, setReverse] = React.useState(false);
-  console.log(authState);
-  return (
-    authState.userData && (
-      <div className={classes.mainContainer}>
-        <Toolbar />
-        <div className={classes.cardContainer}>
-          <Card className={classes.card}>
-            <CardContent className={classes.cardContent}>
-              <div className={classes.elementsContainer}>
-                <div className={classes.toggleContainer}>
-                  {/* <Spring
-
-                  reset
-                  reverse={reverse}
-                  from={{ number: 300 }}
-                  to={{ number: 250 }}
-                >
-                  {props => (
-                    <div
-                      style={{ width: props.number, height: props.number }}
-                      className={classes.toggleButton}
-                      onClick={() => axios.get('open_gate')}
-                      onMouseLeave={() => setReverse(prev => !prev)}
-                      onMouseEnter={() => setReverse(prev => !prev)}
-                    />
-                  )}
-                </Spring> */}
-
                 <ControlSVG
                   className={classes.controlSVG}
-                  onButtonClick={opengate}
+                  onButtonClick={() => opengate(snackBarContext)}
                 />
               </div>
               <div className={classes.titleContainer}>
@@ -170,10 +157,12 @@ const Home = () => {
               <Typography className={classes.lastTimeUsed} variant="caption">
                 {t('home.lastUser')}
               </Typography>
+
               <Fab
                 className={classes.notUsingButton}
                 color="primary"
                 variant="extended"
+                onClick={() => notUsing(snackBarContext)}
               >
                 {t('home.notUsing')}
               </Fab>
