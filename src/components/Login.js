@@ -33,7 +33,9 @@ const currentUser = () => {
     try {
       const result = await axios('current_user');
       localStorage.setItem('currentUser', JSON.stringify(result.data));
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
   fetchData();
 };

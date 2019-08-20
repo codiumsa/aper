@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import Button from '@material-ui/core/Button';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import InfoIcon from '@material-ui/icons/Info';
@@ -81,11 +80,5 @@ CustomizedSnackbar.propTypes = {
   onClose: PropTypes.func,
   variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired
 };
-
-const useStyles2 = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1)
-  }
-}));
 
 export default CustomizedSnackbar;

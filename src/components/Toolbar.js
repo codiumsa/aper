@@ -47,8 +47,6 @@ const AperToolbar = ({ history }) => {
     currentUser = JSON.parse(currentUserString);
   }
 
-  console.log(currentUser);
-
   const handleAvatarClick = event => {
     setAnchorEl(event.currentTarget);
   };

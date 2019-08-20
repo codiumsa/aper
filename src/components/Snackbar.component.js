@@ -1,5 +1,4 @@
-import { IconButton, Snackbar } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Snackbar } from '@material-ui/core';
 import React from 'react';
 import { SnackbarConsumer } from './Snackbar.context';
 import CustomizedSnackbar from './CustomizedSnackbar';
@@ -19,7 +18,7 @@ const SharedSnackbar = () => (
         <CustomizedSnackbar
           onClose={closeSnackbar}
           message={message}
-          variant={variant}
+          variant={variant || 'info'}
         />
       </Snackbar>
     )}

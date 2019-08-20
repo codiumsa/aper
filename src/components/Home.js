@@ -130,7 +130,6 @@ const Home = props => {
   const { t } = useTranslation();
   const classes = useStyles();
   const snackBarContext = useContext(SnackbarContext);
-  console.log(props);
   return (
     <div className={classes.mainContainer}>
       <Toolbar history={props.history} />
