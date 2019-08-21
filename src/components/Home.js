@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,7 @@ import axios from '../utils/axios';
 import Toolbar from './Toolbar';
 import ControlSVG from './ControlSVG';
 import { SnackbarContext } from './Snackbar.context';
+import { AuthenticationContext } from './Authenticator';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -112,12 +113,28 @@ const opengate = snackBarContext => {
   fetchData();
 };
 
-const notUsing = snackBarContext => {
+const updateLocalStorage = () => {
   const fetchData = async () => {
     try {
+      console.log('Leyendo de DB');
+      const result = await axios('current_user');
+      console.log('Guardando en Local Storage');
+      let currentUser = JSON.stringify(result.data);
+      localStorage.setItem('currentUser', currentUser);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  fetchData();
+};
+
+const setPresence = snackBarContext => {
+  const fetchData = async () => {
+    try {
+      console.log('Guardando en DB');
       const result = await axios.post('not_using');
-      if (result.data && snackBarContext)
-        snackBarContext.openSnackbar(result.data, 'success');
+      if (result.data && snackBarContext) updateLocalStorage();
+      snackBarContext.openSnackbar(result.data, 'success');
     } catch (e) {
       if (e.request && e.request.response && snackBarContext)
         snackBarContext.openSnackbar(e.request.response, 'error');
@@ -126,49 +143,71 @@ const notUsing = snackBarContext => {
   fetchData();
 };
 
+const getCurrentUser = () => {
+  console.log('Leyendo local storage');
+  const currentUserString = localStorage.getItem('currentUser');
+  if (currentUserString) {
+    return JSON.parse(currentUserString);
+  }
+};
+
 const Home = props => {
   const { t } = useTranslation();
   const classes = useStyles();
   const snackBarContext = useContext(SnackbarContext);
+  const { authState } = useContext(AuthenticationContext);
+  const currentUser = getCurrentUser();
+
+  const [isParking, setIsParking] = useState(!currentUser.absent_on);
   return (
     <div className={classes.mainContainer}>
-      <Toolbar history={props.history} />
-      <div className={classes.cardContainer}>
-        <Card className={classes.card}>
-          <CardContent className={classes.cardContent}>
-            <div className={classes.elementsContainer}>
-              <div className={classes.toggleContainer}>
-                <ControlSVG
-                  className={classes.controlSVG}
-                  onButtonClick={() => opengate(snackBarContext)}
-                />
-              </div>
-              <div className={classes.titleContainer}>
-                <Typography variant="h6">{t('home.clickHere')}</Typography>
-                <FontAwesomeIcon
-                  className={classes.pointUpIcon}
-                  icon={faLongArrowAltUp}
-                />
-              </div>
-              <Typography className={classes.warning} variant="subtitle2">
-                {t('home.subtitle')}
-              </Typography>
-              <Typography className={classes.lastTimeUsed} variant="caption">
-                {t('home.lastUser')}
-              </Typography>
+      {authState.loggedIn && (
+        <React.Fragment>
+          <Toolbar history={props.history} />
+          <div className={classes.cardContainer}>
+            <Card className={classes.card}>
+              <CardContent className={classes.cardContent}>
+                <div className={classes.elementsContainer}>
+                  <div className={classes.toggleContainer}>
+                    <ControlSVG
+                      className={classes.controlSVG}
+                      onButtonClick={() => opengate(snackBarContext)}
+                    />
+                  </div>
+                  <div className={classes.titleContainer}>
+                    <Typography variant="h6">{t('home.clickHere')}</Typography>
+                    <FontAwesomeIcon
+                      className={classes.pointUpIcon}
+                      icon={faLongArrowAltUp}
+                    />
+                  </div>
+                  <Typography className={classes.warning} variant="subtitle2">
+                    {t('home.subtitle')}
+                  </Typography>
+                  <Typography
+                    className={classes.lastTimeUsed}
+                    variant="caption"
+                  >
+                    {t('home.lastUser')}
+                  </Typography>
 
-              <Fab
-                className={classes.notUsingButton}
-                color="primary"
-                variant="extended"
-                onClick={() => notUsing(snackBarContext)}
-              >
-                {t('home.notUsing')}
-              </Fab>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+                  <Fab
+                    className={classes.notUsingButton}
+                    color="primary"
+                    variant="extended"
+                    onClick={() => {
+                      setPresence(snackBarContext);
+                      setIsParking(!isParking);
+                    }}
+                  >
+                    {isParking ? t('home.notUsing') : 'Si vas a usar tu lugar?'}
+                  </Fab>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </React.Fragment>
+      )}
     </div>
   );
 };

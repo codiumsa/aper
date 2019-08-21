@@ -59,38 +59,44 @@ const AperToolbar = ({ history }) => {
     setAnchorEl(null);
   };
 
+  console.log(authState);
   return (
     <div className={classes.mainContainer}>
-      <AppBar className={classes.appBar} color="default">
-        <Toolbar className={classes.toolbar}>
-          <Link
-            style={{ textDecoration: 'none', color: 'white', fontSize: '150%' }}
-            to="/home"
-          >
-            Aper
-          </Link>
-          <Avatar
-            onClick={handleAvatarClick}
-            className={classes.userAvatar}
-            src={authState.userData.profileObj.imageUrl}
-          />
-          <Menu
-            id="lock-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={logoutUser}>Logout</MenuItem>
-            ))}
-          </Menu>
-          {currentUser.role === 'ADMIN' && (
-            <Button className={classes.usersButton} onClick={routeUsers}>
-              Users
-            </Button>
-          )}
-        </Toolbar>
-      </AppBar>
+      {authState.loggedIn && (
+        <AppBar className={classes.appBar} color="default">
+          <Toolbar className={classes.toolbar}>
+            <Link
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                fontSize: '150%'
+              }}
+              to="/home"
+            >
+              Aper
+            </Link>
+            <Avatar
+              onClick={handleAvatarClick}
+              className={classes.userAvatar}
+              src={authState.userData.profileObj.imageUrl}
+            />
+            <Menu
+              id="lock-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={logoutUser}>Logout</MenuItem>
+            </Menu>
+            {currentUser.role === 'ADMIN' && (
+              <Button className={classes.usersButton} onClick={routeUsers}>
+                Users
+              </Button>
+            )}
+          </Toolbar>
+        </AppBar>
+      )}
     </div>
   );
 };

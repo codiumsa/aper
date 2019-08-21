@@ -13,7 +13,6 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 import { useSpring, animated } from 'react-spring';
 import { AuthenticationContext } from './Authenticator';
 import logo from '../assets/aper-logo.svg';
-import axios from '../utils/axios';
 
 const calc = (x, y) => [
   -(y - window.innerHeight / 2) / 20,
@@ -27,18 +26,6 @@ const useLogoStyles = makeStyles({
   media: { width: '80%' },
   mediaSm: { width: '197', height: '120px' }
 });
-
-const currentUser = () => {
-  const fetchData = async () => {
-    try {
-      const result = await axios('current_user');
-      localStorage.setItem('currentUser', JSON.stringify(result.data));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  fetchData();
-};
 
 const Logo = ({ preventAnimation }) => {
   const [props, set] = useSpring(() => ({
@@ -164,12 +151,10 @@ const Login = ({ history }) => {
   const { loginUser } = useContext(AuthenticationContext);
   // We make sure to logout user if this component is rendered
   const loginCallback = (data, success) => {
-    console.log(data);
-    loginUser(data);
-
     if (success) {
-      history.push('home');
-      currentUser();
+      loginUser(data);
+    } else {
+      console.log(data);
     }
   };
   const matchesMedia = useMediaQuery('(min-width:800px)');

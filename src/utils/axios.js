@@ -7,21 +7,26 @@ const instance = axios.create({
   timeout: 15000
 });
 
-console.log('setting up axios');
-
-const userDataString = localStorage.getItem('userData');
-let userData = {};
-let loggedIn = false;
-if (userDataString) {
-  userData = JSON.parse(userDataString);
-  if (userData && userData.error) {
-    loggedIn = false;
-  } else {
-    loggedIn = true;
+const setupAxios = () => {
+  const userDataString = localStorage.getItem('userData');
+  let userData = {};
+  let loggedIn = false;
+  if (userDataString) {
+    userData = JSON.parse(userDataString);
+    if (userData && userData.error) {
+      loggedIn = false;
+    } else {
+      loggedIn = true;
+    }
   }
-}
 
-if (loggedIn) {
-  instance.defaults.headers.common.Authorization = userData.tokenId;
-}
+  if (loggedIn) {
+    instance.defaults.headers.common.Authorization = userData.tokenId;
+  }
+};
+
+setupAxios();
+
+instance.setUp = setupAxios;
+
 export default instance;

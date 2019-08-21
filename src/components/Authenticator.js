@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import axios from '../utils/axios';
 
 const AuthenticationContext = React.createContext();
 
@@ -24,10 +25,25 @@ const Authenticator = ({ children, history }) => {
     userData
   });
 
-  const loginUser = React.useCallback(ud => {
+  const loadCurrentUser = () => {
+    const fetchData = async () => {
+      try {
+        axios.setUp();
+        const result = await axios('current_user');
+        localStorage.setItem('currentUser', JSON.stringify(result.data));
+        history.push('home');
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  };
+
+  const loginUser = ud => {
     localStorage.setItem('userData', JSON.stringify(ud));
     setAuthState({ loggedIn: true, verified: true, userData: ud });
-  }, []);
+    loadCurrentUser();
+  };
   // TODO also delete localStorage data if we ever store something there
 
   const logoutUser = React.useCallback(() => {
