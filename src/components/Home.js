@@ -155,7 +155,6 @@ const Home = props => {
       try {
         let presence = true;
         const result = await axios('absent');
-        q;
         if (result.data === 'yes') presence = false;
         console.log(presence);
         setIsParking(presence);
