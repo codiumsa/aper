@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
 const AperToolbar = ({ history }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { logoutUser, authState } = useContext(AuthenticationContext);
 
   const currentUserString = localStorage.getItem('currentUser');
@@ -51,12 +52,24 @@ const AperToolbar = ({ history }) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const routeUsers = () => {
-    history.push('users');
+  const handleUserClick = event => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const routeUsersOrder = () => {
+    history.push('users_order');
+  };
+
+  const routeUsersRoles = () => {
+    history.push('users_roles');
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCloseUser = () => {
+    setAnchorElUser(null);
   };
 
   return (
@@ -88,11 +101,22 @@ const AperToolbar = ({ history }) => {
             >
               <MenuItem onClick={logoutUser}>Logout</MenuItem>
             </Menu>
+
             {currentUser.role === 'ADMIN' && (
-              <Button className={classes.usersButton} onClick={routeUsers}>
+              <Button className={classes.usersButton} onClick={handleUserClick}>
                 Users
               </Button>
             )}
+            <Menu
+              id="lock-menu"
+              anchorEl={anchorElUser}
+              keepMounted
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUser}
+            >
+              <MenuItem onClick={routeUsersOrder}>Order </MenuItem>
+              <MenuItem onClick={routeUsersRoles}>Roles</MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
       )}

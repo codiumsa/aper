@@ -137,7 +137,7 @@ const mockUsers = [
   }
 ];
 
-const Users = () => {
+const UsersOrder = () => {
   const classes = useStyles();
   const detectMobile = useMobileDetect();
   const { t } = useTranslation();
@@ -197,7 +197,7 @@ const Users = () => {
     try {
       const result = await axios({
         method: 'post',
-        url: 'users',
+        url: 'users_order',
         data: bodyFormData,
         config: { headers: { 'Content-Type': 'multipart/form-data' } }
       });
@@ -264,4 +264,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UsersOrder;
