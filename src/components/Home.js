@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -116,9 +116,7 @@ const opengate = snackBarContext => {
 const updateLocalStorage = () => {
   const fetchData = async () => {
     try {
-      console.log('Leyendo de DB');
       const result = await axios('current_user');
-      console.log('Guardando en Local Storage');
       let currentUser = JSON.stringify(result.data);
       localStorage.setItem('currentUser', currentUser);
     } catch (e) {
@@ -131,10 +129,11 @@ const updateLocalStorage = () => {
 const setPresence = snackBarContext => {
   const fetchData = async () => {
     try {
-      console.log('Guardando en DB');
       const result = await axios.post('not_using');
-      if (result.data && snackBarContext) updateLocalStorage();
-      snackBarContext.openSnackbar(result.data, 'success');
+      if (result.data && snackBarContext) {
+        updateLocalStorage();
+        snackBarContext.openSnackbar(result.data, 'success');
+      }
     } catch (e) {
       if (e.request && e.request.response && snackBarContext)
         snackBarContext.openSnackbar(e.request.response, 'error');
@@ -143,22 +142,33 @@ const setPresence = snackBarContext => {
   fetchData();
 };
 
-const getCurrentUser = () => {
-  console.log('Leyendo local storage');
-  const currentUserString = localStorage.getItem('currentUser');
-  if (currentUserString) {
-    return JSON.parse(currentUserString);
-  }
-};
-
 const Home = props => {
   const { t } = useTranslation();
   const classes = useStyles();
   const snackBarContext = useContext(SnackbarContext);
   const { authState } = useContext(AuthenticationContext);
-  const currentUser = getCurrentUser();
 
-  const [isParking, setIsParking] = useState(!currentUser.absent_on);
+  const [isParking, setIsParking] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let presence = true;
+        const result = await axios('absent');
+        q;
+        if (result.data === 'yes') presence = false;
+        console.log(presence);
+        setIsParking(presence);
+      } catch (e) {}
+    };
+    fetchData();
+  }, [isParking]);
+
+  const handleClick = () => {
+    setPresence(snackBarContext);
+    setIsParking(!isParking);
+  };
+
   return (
     <div className={classes.mainContainer}>
       {authState.loggedIn && (
@@ -195,12 +205,9 @@ const Home = props => {
                     className={classes.notUsingButton}
                     color="primary"
                     variant="extended"
-                    onClick={() => {
-                      setPresence(snackBarContext);
-                      setIsParking(!isParking);
-                    }}
+                    onClick={() => handleClick()}
                   >
-                    {isParking ? t('home.notUsing') : 'Si vas a usar tu lugar?'}
+                    {isParking ? t('home.notUsing') : t('home.using')}
                   </Fab>
                 </div>
               </CardContent>

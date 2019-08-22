@@ -150,7 +150,7 @@ const Users = () => {
       setUsers(result.data);
       setNextOrder(
         Math.max.apply(Math, result.data.map(user => user.order)) + 1
-      ); //encuentra el valor mas alto de user.order
+      );
     };
     fetchData();
   }, []);
