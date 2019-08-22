@@ -16,5 +16,8 @@
     "lastUser": "El último usuario fue Rikorita, hoy a las 11:20AM",
     "notUsing": "No vas a usar tu lugar?",
     "using": "Si vas a usar tu lugar?"
+  },
+  "users": {
+    "save": "Guardar"
   }
 }

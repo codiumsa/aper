@@ -156,7 +156,6 @@ const Home = props => {
         let presence = true;
         const result = await axios('absent');
         if (result.data === 'yes') presence = false;
-        console.log(presence);
         setIsParking(presence);
       } catch (e) {}
     };
@@ -202,7 +201,7 @@ const Home = props => {
 
                   <Fab
                     className={classes.notUsingButton}
-                    color="primary"
+                    color={isParking ? 'primary' : 'secondary'}
                     variant="extended"
                     onClick={() => handleClick()}
                   >

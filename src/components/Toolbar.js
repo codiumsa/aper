@@ -59,7 +59,6 @@ const AperToolbar = ({ history }) => {
     setAnchorEl(null);
   };
 
-  console.log(authState);
   return (
     <div className={classes.mainContainer}>
       {authState.loggedIn && (

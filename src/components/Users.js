@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
@@ -12,6 +12,8 @@ import { Avatar } from '@material-ui/core';
 import useMobileDetect from 'use-mobile-detect-hook';
 import axios from '../utils/axios';
 import Toolbar from './Toolbar';
+import { useTranslation } from 'react-i18next';
+import { SnackbarContext } from './Snackbar.context';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -138,6 +140,9 @@ const mockUsers = [
 const Users = () => {
   const classes = useStyles();
   const detectMobile = useMobileDetect();
+  const { t } = useTranslation();
+  const snackBarContext = useContext(SnackbarContext);
+
   const [users, setUsers] = useState(
     mockUsers.map(user => ({ ...user, hovering: false }))
   );
@@ -189,12 +194,18 @@ const Users = () => {
     const updatedUsers = users.slice();
     const bodyFormData = new FormData();
     bodyFormData.set('ids', updatedUsers.map(x => x.order).join());
-    await axios({
-      method: 'post',
-      url: 'users',
-      data: bodyFormData,
-      config: { headers: { 'Content-Type': 'multipart/form-data' } }
-    });
+    try {
+      const result = await axios({
+        method: 'post',
+        url: 'users',
+        data: bodyFormData,
+        config: { headers: { 'Content-Type': 'multipart/form-data' } }
+      });
+      if (result.data) snackBarContext.openSnackbar(result.data, 'success');
+    } catch (e) {
+      if (e.request && e.request.response)
+        snackBarContext.openSnackbar(e.request.response, 'error');
+    }
   };
 
   return (
@@ -244,7 +255,7 @@ const Users = () => {
               variant="extended"
               onClick={() => handleSaveClick()}
             >
-              Guardar
+              {t('users.save')}
             </Fab>
           </CardActions>
         </Card>
