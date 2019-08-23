@@ -11,6 +11,7 @@ import { CustomThemeProvider } from './theme';
 import './utils/i18n';
 import { SnackbarProvider } from './components/Snackbar.context';
 import UsersRoles from './components/UsersRoles';
+import Guests from './components/Guests';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path={'/home'} component={Home} />
             <Route path={'/users_order'} component={UsersOrder} />
             <Route path={'/users_roles'} component={UsersRoles} />
+            <Route path={'/guests'} component={Guests} />
             <Route exact path="/" render={() => <Redirect to="/home" />} />
           </Authenticator>
         </SnackbarProvider>

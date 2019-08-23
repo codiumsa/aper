@@ -8,11 +8,13 @@ const Authenticator = ({ children, history }) => {
   const userDataString = localStorage.getItem('userData');
   let userData = {};
   let loggedIn = false;
+  let role = 'GUEST';
   if (userDataString) {
     userData = JSON.parse(userDataString);
     if (userData && userData.error) {
       userData = false;
       loggedIn = false;
+      role = userData.profileObj.role;
     } else {
       loggedIn = true;
     }
@@ -22,27 +24,27 @@ const Authenticator = ({ children, history }) => {
   const [authState, setAuthState] = useState({
     loggedIn,
     verified: true,
-    userData
+    userData,
+    role
   });
 
-  const loadCurrentUser = () => {
+  const loginUser = ud => {
+    localStorage.setItem('userData', JSON.stringify(ud));
+
     const fetchData = async () => {
       try {
         axios.setUp();
         const result = await axios('current_user');
         localStorage.setItem('currentUser', JSON.stringify(result.data));
-        history.push('home');
+        let r = result.data.role;
+        setAuthState({ loggedIn: true, verified: true, userData: ud, role: r });
+        if (r === 'ADMIN' || r === 'USER') history.push('home');
+        else history.push('guests');
       } catch (e) {
         console.log(e);
       }
     };
     fetchData();
-  };
-
-  const loginUser = ud => {
-    localStorage.setItem('userData', JSON.stringify(ud));
-    setAuthState({ loggedIn: true, verified: true, userData: ud });
-    loadCurrentUser();
   };
   // TODO also delete localStorage data if we ever store something there
 
@@ -57,7 +59,7 @@ const Authenticator = ({ children, history }) => {
     if (authState.verified && !authState.loggedIn) {
       history.push('/login');
     }
-  }, [authState.verified, authState.loggedIn, history]);
+  }, [authState.verified, authState.loggedIn, history, authState.role]);
 
   return (
     <AuthenticationContext.Provider
