@@ -152,7 +152,7 @@ const Login = ({ history }) => {
   // We make sure to logout user if this component is rendered
   const loginCallback = (data, success) => {
     if (success) {
-      loginUser(data);
+      loginUser(data, history);
     } else {
       console.log(data);
     }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import axios from '../utils/axios';
-
 const AuthenticationContext = React.createContext();
 
 const Authenticator = ({ children, history }) => {
   const userDataString = localStorage.getItem('userData');
+  const currentUserString = localStorage.getItem('userData');
   let userData = {};
+  let currentUser = {};
   let loggedIn = false;
   let role = 'GUEST';
   if (userDataString) {
@@ -14,21 +15,21 @@ const Authenticator = ({ children, history }) => {
     if (userData && userData.error) {
       userData = false;
       loggedIn = false;
-      role = userData.profileObj.role;
+      if (currentUserString) {
+        currentUser = JSON.parse(userDataString);
+        role = currentUser.role;
+      }
     } else {
       loggedIn = true;
     }
   }
-  //console.log(userDataString);
-
   const [authState, setAuthState] = useState({
     loggedIn,
     verified: true,
     userData,
     role
   });
-
-  const loginUser = ud => {
+  const loginUser = (ud, history) => {
     localStorage.setItem('userData', JSON.stringify(ud));
 
     const fetchData = async () => {

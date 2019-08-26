@@ -25,15 +25,12 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: '#FFC09F',
-    width: '15px',
     marginRight: '5px',
     marginLeft: '5px',
-    height: '15px',
     fontSize: '12px',
     color: 'black'
   },
   userAvatar: {
-    display: 'block',
     margin: 'auto',
     width: 120,
     height: 120
@@ -59,11 +56,8 @@ const useStyles = makeStyles(theme => ({
       padding: '0px 15px 8px 15px'
     }
   },
-  cardContent: {
-    display: 'flex',
-    flexDirection: 'row'
-  },
   gridList: {
+    paddingTop: 20,
     maxWidth: 800,
     height: '100%',
     justifyContent: 'center',
