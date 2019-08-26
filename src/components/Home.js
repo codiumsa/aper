@@ -126,22 +126,6 @@ const updateLocalStorage = () => {
   fetchData();
 };
 
-const setPresence = snackBarContext => {
-  const fetchData = async () => {
-    try {
-      const result = await axios.post('not_using');
-      if (result.data && snackBarContext) {
-        updateLocalStorage();
-        snackBarContext.openSnackbar(result.data, 'success');
-      }
-    } catch (e) {
-      if (e.request && e.request.response && snackBarContext)
-        snackBarContext.openSnackbar(e.request.response, 'error');
-    }
-  };
-  fetchData();
-};
-
 const Home = props => {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -153,18 +137,38 @@ const Home = props => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let presence = true;
         const result = await axios('absent');
-        if (result.data === 'yes') presence = false;
-        setIsParking(presence);
+        if (result.data === 'yes') setIsParking(false);
+        if (result.data === 'no') setIsParking(true);
       } catch (e) {}
     };
     fetchData();
-  }, [isParking]);
+  }, []);
 
   const handleClick = () => {
-    setPresence(snackBarContext);
     setIsParking(!isParking);
+    const fetchData = async () => {
+      try {
+        const result = await axios.post('not_using');
+        if (result.data && snackBarContext) {
+          updateLocalStorage();
+          snackBarContext.openSnackbar(result.data, 'success');
+          console.log(result.request.status);
+          if (result.request.status === 201) {
+            setIsParking(false);
+          }
+          if (result.request.status === 202) {
+            setIsParking(true);
+          }
+        }
+      } catch (e) {
+        if (e.request && e.request.response && snackBarContext) {
+          snackBarContext.openSnackbar(e.request.response, 'error');
+          return false;
+        }
+      }
+    };
+    fetchData();
   };
 
   return (

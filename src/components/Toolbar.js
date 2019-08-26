@@ -114,7 +114,7 @@ const AperToolbar = ({ history }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUser}
             >
-              <MenuItem onClick={routeUsersOrder}>Order </MenuItem>
+              <MenuItem onClick={routeUsersOrder}>Priorities </MenuItem>
               <MenuItem onClick={routeUsersRoles}>Roles</MenuItem>
             </Menu>
           </Toolbar>

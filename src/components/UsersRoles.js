@@ -136,7 +136,6 @@ const getCurrentUser = () => {
   let userData = {};
   if (userDataString) {
     userData = JSON.parse(userDataString);
-    console.log(userData);
     return userData;
   }
 };
