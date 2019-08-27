@@ -139,7 +139,7 @@ const Home = props => {
 
   function renderDate(date) {
     date = new Date(date);
-    date.setHours(date.getHours() + 4);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
     const today = new Date();
     const yesterday = new Date();
@@ -153,9 +153,12 @@ const Home = props => {
       setLastDate(
         'el ' +
           date.toLocaleDateString('es-ES', {
+            weekday: 'long',
             day: 'numeric',
             month: 'long'
-          })
+          }) +
+          ' a las ' +
+          date.toLocaleTimeString()
       );
   }
 
@@ -239,7 +242,7 @@ const Home = props => {
                     className={classes.lastTimeUsed}
                     variant="caption"
                   >
-                    {'El ultimo usuario fue ' + lastUser + ' ' + lastDate}
+                    {'El último usuario fue ' + lastUser + ' ' + lastDate}
                   </Typography>
 
                   <Fab
