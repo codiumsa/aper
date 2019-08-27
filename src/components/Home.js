@@ -168,7 +168,13 @@ const Home = props => {
         const result = await axios('absent');
         if (result.data === 'yes') setIsParking(false);
         if (result.data === 'no') setIsParking(true);
-      } catch (e) {}
+      } catch (e) {
+        if (e.request.status && e.request.status === 401) {
+          props.history.push('/login');
+        } else if (e.request.status && e.request.status === 403) {
+          props.history.push('/guests');
+        }
+      }
     };
 
     const fetchLast = async () => {
@@ -179,13 +185,16 @@ const Home = props => {
           renderDate(result.data.last_use);
         }
       } catch (e) {
-        console.log(e);
+        if (e.request.status && e.request.status === 401) {
+          props.history.push('/login');
+        } else if (e.request.status && e.request.status === 403) {
+          props.history.push('/guests');
+        }
       }
     };
-
     fetchAbsense();
     fetchLast();
-  }, []);
+  });
 
   const handleClick = () => {
     setIsParking(!isParking);
@@ -195,7 +204,6 @@ const Home = props => {
         if (result.data && snackBarContext) {
           updateLocalStorage();
           snackBarContext.openSnackbar(result.data, 'success');
-          console.log(result.request.status);
           if (result.request.status === 201) {
             setIsParking(false);
           }

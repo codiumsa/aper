@@ -140,7 +140,7 @@ const getCurrentUser = () => {
   }
 };
 
-const UsersRoles = () => {
+const UsersRoles = ({ history }) => {
   const classes = useStyles();
   const detectMobile = useMobileDetect();
   const { t } = useTranslation();
@@ -156,11 +156,19 @@ const UsersRoles = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('users');
-      setUsers(result.data);
+      try {
+        const result = await axios('users');
+        setUsers(result.data);
+      } catch (e) {
+        if (e.request.status && e.request.status === 401) {
+          history.push('/login');
+        } else if (e.request.status && e.request.status === 403) {
+          history.push('/home');
+        }
+      }
     };
     fetchData();
-  }, []);
+  }, [history]);
 
   const handleClick = clickedUser => {
     let i = index;

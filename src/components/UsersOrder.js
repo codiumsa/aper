@@ -131,7 +131,7 @@ const mockUsers = [
   }
 ];
 
-const UsersOrder = () => {
+const UsersOrder = ({ history }) => {
   const classes = useStyles();
   const detectMobile = useMobileDetect();
   const { t } = useTranslation();
@@ -145,14 +145,23 @@ const UsersOrder = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('users');
-      setUsers(result.data);
-      setNextOrder(
-        Math.max.apply(Math, result.data.map(user => user.order)) + 1
-      );
+      try {
+        const result = await axios('users');
+        setUsers(result.data);
+        setNextOrder(
+          Math.max.apply(Math, result.data.map(user => user.order)) + 1
+        );
+      } catch (e) {
+        if (e.request.status && e.request.status === 401) {
+          history.push('/login');
+        } else if (e.request.status && e.request.status === 403) {
+          history.push('/home');
+        }
+      }
     };
+
     fetchData();
-  }, []);
+  }, [history]);
 
   const handleClick = currentUser => {
     if (currentUser.order) {
@@ -197,8 +206,11 @@ const UsersOrder = () => {
       });
       if (result.data) snackBarContext.openSnackbar(result.data, 'success');
     } catch (e) {
-      if (e.request && e.request.response)
+      if (e.request.status && e.request.status === 401) {
+        history.push('/login');
+      } else if (e.request.response) {
         snackBarContext.openSnackbar(e.request.response, 'error');
+      }
     }
   };
 
