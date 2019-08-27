@@ -214,7 +214,7 @@ const Home = props => {
       } catch (e) {
         if (e.request && e.request.response && snackBarContext) {
           snackBarContext.openSnackbar(e.request.response, 'error');
-          return false;
+          setIsParking(!isParking);
         }
       }
     };
