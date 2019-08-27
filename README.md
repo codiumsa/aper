@@ -2,8 +2,7 @@
 
 ### `Setup your environment`
 
-cd into the project root. Create `.env.development.local` file initializing REACT_APP_GOOGLE_CID to your Google Client ID
-Rename config.example.json to config.json.
+Rename config.example.json to config.json and set REACT_APP_GOOGLE_CID to your Google Client ID
 
 ### `Install and start dev mode`
 
