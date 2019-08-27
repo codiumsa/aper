@@ -13,6 +13,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 import { useSpring, animated } from 'react-spring';
 import { AuthenticationContext } from './Authenticator';
 import logo from '../assets/aper-logo.svg';
+import config from '../config/config.json';
 
 const calc = (x, y) => [
   -(y - window.innerHeight / 2) / 20,
@@ -222,7 +223,7 @@ const Login = ({ history }) => {
                 </Typography>
                 <div className={classes.loginWithContainer}>
                   <GoogleLogin
-                    clientId={process.env.REACT_APP_GOOGLE_CID}
+                    clientId={config.REACT_APP_GOOGLE_CID}
                     onSuccess={data => loginCallback(data, true)}
                     onFailure={data => loginCallback(data, false)}
                     render={renderProps => (
