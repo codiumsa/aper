@@ -31,7 +31,6 @@ const Authenticator = ({ children, history }) => {
   });
   const loginUser = (ud, history) => {
     localStorage.setItem('userData', JSON.stringify(ud));
-
     const fetchData = async () => {
       try {
         axios.setUp();
@@ -53,6 +52,7 @@ const Authenticator = ({ children, history }) => {
     localStorage.removeItem('userData');
     localStorage.removeItem('currentUser');
     setAuthState({ loggedIn: false, verified: true, userData: {} });
+    axios.setUp();
     history.push('/login');
   }, [history]);
 

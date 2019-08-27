@@ -99,7 +99,15 @@ const AperToolbar = ({ history }) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={logoutUser}>Logout</MenuItem>
+              <MenuItem onClick={logoutUser}>
+                Logout
+                {/*                <GoogleLogout
+                  clientId={process.env.REACT_APP_GOOGLE_CID}
+                  buttonText="Logout"
+                  onLogoutSuccess={logoutUser}
+                >
+                </GoogleLogout>*/}
+              </MenuItem>
             </Menu>
 
             {currentUser.role === 'ADMIN' && (

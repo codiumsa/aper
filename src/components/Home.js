@@ -134,15 +134,54 @@ const Home = props => {
 
   const [isParking, setIsParking] = useState(true);
 
+  const [lastUser, setLastUser] = useState('');
+  const [lastDate, setLastDate] = useState('');
+
+  function renderDate(date) {
+    date = new Date(date);
+    date.setHours(date.getHours() + 4);
+
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+
+    if (date.toLocaleDateString() === today.toLocaleDateString()) {
+      setLastDate('hoy a las ' + date.toLocaleTimeString());
+    } else if (date.toLocaleDateString() === yesterday.toLocaleDateString()) {
+      setLastDate('ayer a las ' + date.toLocaleTimeString());
+    } else
+      setLastDate(
+        'el ' +
+          date.toLocaleDateString('es-ES', {
+            day: 'numeric',
+            month: 'long'
+          })
+      );
+  }
+
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAbsense = async () => {
       try {
         const result = await axios('absent');
         if (result.data === 'yes') setIsParking(false);
         if (result.data === 'no') setIsParking(true);
       } catch (e) {}
     };
-    fetchData();
+
+    const fetchLast = async () => {
+      try {
+        const result = await axios('last_use');
+        if (result.data) {
+          setLastUser(result.data.name);
+          renderDate(result.data.last_use);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchAbsense();
+    fetchLast();
   }, []);
 
   const handleClick = () => {
@@ -200,7 +239,7 @@ const Home = props => {
                     className={classes.lastTimeUsed}
                     variant="caption"
                   >
-                    {t('home.lastUser')}
+                    {'El ultimo usuario fue ' + lastUser + ' ' + lastDate}
                   </Typography>
 
                   <Fab
