@@ -78,6 +78,7 @@ const useStyles = makeStyles(theme => ({
   },
   pointUpIcon: {
     marginLeft: theme.spacing(),
+    marginRight: theme.spacing(),
     color: theme.palette.secondary.main,
     fontSize: 24
   },
@@ -237,6 +238,10 @@ const Home = props => {
                     />
                   </div>
                   <div className={classes.titleContainer}>
+                    <FontAwesomeIcon
+                      className={classes.pointUpIcon}
+                      icon={faLongArrowAltUp}
+                    />
                     <Typography variant="h6">{t('home.clickHere')}</Typography>
                     <FontAwesomeIcon
                       className={classes.pointUpIcon}
@@ -250,7 +255,8 @@ const Home = props => {
                     className={classes.lastTimeUsed}
                     variant="caption"
                   >
-                    {'El último usuario fue ' + lastUser + ' ' + lastDate}
+                    {lastUser &&
+                      t('home.lastUser') + ' ' + lastUser + ' ' + lastDate}
                   </Typography>
 
                   <Fab

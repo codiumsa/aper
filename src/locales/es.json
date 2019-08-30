@@ -1,6 +1,6 @@
 {
   "login": {
-    "title": "Ingresá a aper",
+    "title": "Ingresá a Aper",
     "name": "Nombre y Apellido",
     "email": "Email",
     "password": "Password",
@@ -11,11 +11,11 @@
     "orCreateAccount": "O, podés crear una cuenta"
   },
   "home": {
-    "clickHere": "Usá el control!",
+    "clickHere": "¡Usá el control!",
     "subtitle": "Puede tardar un chiqui, tenele paciencia...",
-    "lastUser": "El último usuario fue Rikorita, hoy a las 11:20AM",
-    "notUsing": "No vas a usar tu lugar?",
-    "using": "Si vas a usar tu lugar?"
+    "lastUser": "El último usuario",
+    "notUsing": "¿No vas a usar tu lugar?",
+    "using": "¿Sí vas a usar tu lugar?"
   },
   "users": {
     "save": "Guardar"
