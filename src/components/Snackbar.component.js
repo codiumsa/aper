@@ -8,11 +8,11 @@ const SharedSnackbar = () => (
     {({ snackbarIsOpen, message, variant, closeSnackbar }) => (
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
+          vertical: 'top',
+          horizontal: 'center'
         }}
         open={snackbarIsOpen}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={closeSnackbar}
       >
         <CustomizedSnackbar
