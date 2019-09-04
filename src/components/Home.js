@@ -193,7 +193,7 @@ const Home = props => {
     };
     fetchAbsense();
     fetchLast();
-  });
+  }, []);
 
   const handleClick = () => {
     setIsParking(!isParking);
