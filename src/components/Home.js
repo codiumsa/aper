@@ -125,7 +125,7 @@ const updateLocalStorage = () => {
   fetchData();
 };
 
-const Home = props => {
+const Home = ({ history }) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const snackBarContext = useContext(SnackbarContext);
@@ -169,9 +169,9 @@ const Home = props => {
         if (result.data === 'no') setIsParking(true);
       } catch (e) {
         if (e.request.status && e.request.status === 401) {
-          props.history.push('/login');
+          history.push('/login');
         } else if (e.request.status && e.request.status === 403) {
-          props.history.push('/guests');
+          history.push('/guests');
         }
       }
     };
@@ -185,15 +185,15 @@ const Home = props => {
         }
       } catch (e) {
         if (e.request.status && e.request.status === 401) {
-          props.history.push('/login');
+          history.push('/login');
         } else if (e.request.status && e.request.status === 403) {
-          props.history.push('/guests');
+          history.push('/guests');
         }
       }
     };
     fetchAbsense();
     fetchLast();
-  }, []);
+  }, [history]);
 
   const handleClick = () => {
     setIsParking(!isParking);
@@ -224,7 +224,7 @@ const Home = props => {
     <div className={classes.mainContainer}>
       {authState.loggedIn && (
         <React.Fragment>
-          <Toolbar history={props.history} />
+          <Toolbar history={history} />
           <div className={classes.cardContainer}>
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>

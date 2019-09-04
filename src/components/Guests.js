@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { useTranslation } from 'react-i18next';
 import Toolbar from './Toolbar';
 import { AuthenticationContext } from './Authenticator';
+import axios from '../utils/axios';
 
 const useStyles = makeStyles(theme => ({
   mainContainer: {
@@ -59,16 +60,30 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Guests = props => {
+const Guests = ({ history }) => {
   const { t } = useTranslation();
   const classes = useStyles();
   const { authState } = useContext(AuthenticationContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios('current_user');
+        localStorage.setItem('currentUser', JSON.stringify(result.data));
+        let r = result.data.role;
+        if (r === 'ADMIN' || r === 'USER') history.push('home');
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, [history]);
 
   return (
     <div className={classes.mainContainer}>
       {authState.loggedIn && (
         <React.Fragment>
-          <Toolbar history={props.history} />
+          <Toolbar history={history} />
           <div className={classes.cardContainer}>
             <Card className={classes.card}>
               <CardContent className={classes.cardContent}>
