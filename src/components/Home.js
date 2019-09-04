@@ -19,15 +19,13 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: '1',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: '-webkit-fill-available',
     background: '#508991'
   },
   cardContainer: {
     display: 'flex',
     flex: 1,
     justifyContent: 'center',
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
     alignItems: 'center'
   },
   card: {
@@ -86,16 +84,16 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing()
   },
   lastTimeUsed: {
-    marginTop: theme.spacing(4),
-    fontSize: '14px'
+    marginTop: theme.spacing(2),
+    fontSize: '10px'
   },
   notUsingButton: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4)
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   controlSVG: {
-    width: 300,
-    height: 300,
+    width: 250,
+    height: 250,
     marginTop: theme.spacing()
   }
 }));

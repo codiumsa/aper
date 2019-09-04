@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center',
     background: '#508991',
-    minHeight: '100vh'
+    minHeight: '-webkit-fill-available'
   },
   mainTitle: {
     marginBottom: theme.spacing(6),
@@ -68,7 +68,6 @@ const useStyles = makeStyles(theme => ({
     fontWeight: theme.typography.fontWeightLight
   },
   card: {
-    margin: theme.spacing(),
     width: '90%',
     maxWidth: '960px',
     padding: '30px 95px',
@@ -130,7 +129,7 @@ const useStyles = makeStyles(theme => ({
   },
   createAccount: {
     cursor: 'pointer',
-    marginTop: theme.spacing(7),
+    marginTop: theme.spacing(2),
     display: 'flex',
     justifyContent: 'center',
     color: theme.palette.grey[700],
@@ -184,33 +183,6 @@ const Login = ({ history }) => {
                 {t('login.title')}
               </Typography>
             )}
-            {creatingAccount && (
-              <TextField
-                className={classes.input}
-                label={t('login.name')}
-                variant="filled"
-              />
-            )}
-            <TextField
-              className={classes.input}
-              InputLabelProps={{ shrink: true }}
-              label={t('login.email')}
-              variant="filled"
-            />
-            <TextField
-              className={classes.input}
-              InputLabelProps={{ shrink: true }}
-              label={t('login.password')}
-              type="password"
-              variant="filled"
-            />
-            <Fab
-              className={classes.loginButton}
-              color="primary"
-              variant="extended"
-            >
-              {creatingAccount ? t('login.createAccount') : t('login.login')}
-            </Fab>
 
             {!creatingAccount && (
               <React.Fragment>
@@ -242,17 +214,6 @@ const Login = ({ history }) => {
                 </div>
               </React.Fragment>
             )}
-
-            <Typography
-              className={classes.createAccount}
-              onClick={() => setCreatingAccount(prevState => !prevState)}
-              align="center"
-              variant="body2"
-            >
-              {creatingAccount
-                ? t('login.loginWithAccount')
-                : t('login.orCreateAccount')}
-            </Typography>
           </div>
         </CardContent>
       </Card>

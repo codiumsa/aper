@@ -1,11 +1,31 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Aper",
+  "name": "Aper, Banque Portonal",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
+    },
+    {
+      "sizes": "128x128",
+      "src": "apple-touch-icon.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "256x256",
+      "src": "apple-touch-icon.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "apple-touch-icon.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "1024x1024",
+      "src": "apple-touch-icon.png",
+      "type": "image/png"
     }
   ],
   "start_url": ".",

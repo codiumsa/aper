@@ -6,7 +6,7 @@
     "password": "Password",
     "createAccount": "Crear cuenta",
     "login": "Login",
-    "loginWithProvider": "También podés ingresar utilizando:",
+    "loginWithProvider": "Ingresá usando una cuenta de Google con el botón de abajo",
     "loginWithAccount": "Acceder con cuenta existente",
     "orCreateAccount": "O, podés crear una cuenta"
   },

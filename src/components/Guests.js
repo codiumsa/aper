@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: '1',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: '-webkit-fill-available',
     background: '#508991'
   },
   cardContainer: {
@@ -74,9 +74,10 @@ const Guests = props => {
               <CardContent className={classes.cardContent}>
                 <div className={classes.elementsContainer}>
                   <Typography className={classes.text} variant="subtitle1">
-                    {t(
-                      'Bienvenido, dile a un Administrador que te permita usar Aper'
-                    )}
+                    {t('¡Bienvenido!')}
+                  </Typography>
+                  <Typography className={classes.text} variant="subtitle2">
+                    {t('Pedile a un Administrador que te permita usar Aper')}
                   </Typography>
                 </div>
               </CardContent>

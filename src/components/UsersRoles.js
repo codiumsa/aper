@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flex: '1',
     flexDirection: 'column',
-    minHeight: '100vh',
+    minHeight: '-webkit-fill-available',
     background: '#508991'
   },
   avatar: {
