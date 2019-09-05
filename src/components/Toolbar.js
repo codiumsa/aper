@@ -64,6 +64,10 @@ const AperToolbar = ({ history }) => {
     history.push('users_roles');
   };
 
+  const routeUsersDelete = () => {
+    history.push('users_delete');
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -124,6 +128,7 @@ const AperToolbar = ({ history }) => {
             >
               <MenuItem onClick={routeUsersOrder}>Priorities </MenuItem>
               <MenuItem onClick={routeUsersRoles}>Roles</MenuItem>
+              <MenuItem onClick={routeUsersDelete}>Delete</MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>

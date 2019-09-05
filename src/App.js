@@ -12,6 +12,7 @@ import './utils/i18n';
 import { SnackbarProvider } from './components/Snackbar.context';
 import UsersRoles from './components/UsersRoles';
 import Guests from './components/Guests';
+import UsersDelete from './components/UsersDelete';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path={'/users_order'} component={UsersOrder} />
             <Route path={'/users_roles'} component={UsersRoles} />
             <Route path={'/guests'} component={Guests} />
+            <Route path={'/users_delete'} component={UsersDelete} />
             <Route exact path="/" render={() => <Redirect to="/home" />} />
           </Authenticator>
         </SnackbarProvider>
