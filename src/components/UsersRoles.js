@@ -194,7 +194,7 @@ const UsersRoles = ({ history }) => {
   const handleSaveClick = async () => {
     const updatedUsers = users.slice();
     const bodyFormData = new FormData();
-    bodyFormData.set('ids', updatedUsers.map(x => x.role).join());
+    updatedUsers.map(user => bodyFormData.set(user.id, user.role));
     try {
       const result = await axios({
         method: 'post',
